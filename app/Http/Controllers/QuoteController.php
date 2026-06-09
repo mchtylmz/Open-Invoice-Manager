@@ -211,7 +211,7 @@ class QuoteController extends Controller
 
         $quote->load(['customer', 'items', 'items.product']);
 
-        $pdf = Pdf::loadView('quotes.pdf', compact('quote'));
+        $pdf = Pdf::loadView('pdf.quote', compact('quote'));
 
         return $pdf->download("quote-{$quote->quote_number}.pdf");
     }

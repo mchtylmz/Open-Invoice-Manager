@@ -26,8 +26,6 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <form action="{{ route('settings.update') }}" method="POST" class="p-6">
                     @csrf
-                    @method('PUT')
-
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Company Information</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         <div class="md:col-span-2">

@@ -211,7 +211,7 @@ class InvoiceController extends Controller
 
         $invoice->load(['customer', 'items', 'items.product']);
 
-        $pdf = Pdf::loadView('invoices.pdf', compact('invoice'));
+        $pdf = Pdf::loadView('pdf.invoice', compact('invoice'));
 
         return $pdf->download("invoice-{$invoice->invoice_number}.pdf");
     }
