@@ -1,0 +1,13 @@
+/vendor
+/node_modules
+/.env
+/.git
+.gitignore
+.gitattributes
+.phpunit.result.cache
+.php_cs.cache
+*.md
+!README.md
+!README_tr.md
+tests/
+docs/

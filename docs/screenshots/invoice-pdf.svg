@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="500">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F9FAFB"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+
+  <!-- Invoice Paper Border -->
+  <rect x="20" y="15" width="760" height="470" rx="4" fill="#fff" stroke="#D1D5DB" stroke-width="1.5"/>
+
+  <!-- Header -->
+  <rect x="20" y="15" width="760" height="80" rx="4" fill="#4F46E5"/>
+  <text x="50" y="50" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#fff">INVOICE</text>
+  <text x="50" y="72" font-family="Arial, sans-serif" font-size="12" fill="#fff" opacity="0.8">#INV-2024-001</text>
+  <text x="680" y="50" font-family="Arial, sans-serif" font-size="10" fill="#fff" opacity="0.8">Issue: 2024-03-01</text>
+  <text x="680" y="68" font-family="Arial, sans-serif" font-size="10" fill="#fff" opacity="0.8">Due: 2024-03-15</text>
+
+  <!-- Company Info -->
+  <text x="50" y="125" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#374151">Your Company Ltd.</text>
+  <text x="50" y="143" font-family="Arial, sans-serif" font-size="11" fill="#6B7280">123 Business Ave, Suite 100</text>
+  <text x="50" y="160" font-family="Arial, sans-serif" font-size="11" fill="#6B7280">New York, NY 10001</text>
+  <text x="50" y="177" font-family="Arial, sans-serif" font-size="11" fill="#6B7280">info@yourcompany.com</text>
+  <text x="50" y="194" font-family="Arial, sans-serif" font-size="11" fill="#6B7280">+1 (555) 000-0000</text>
+
+  <!-- Bill To -->
+  <text x="500" y="125" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#6B7280">BILL TO:</text>
+  <text x="500" y="143" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#374151">Acme Corporation</text>
+  <text x="500" y="160" font-family="Arial, sans-serif" font-size="11" fill="#6B7280">456 Market Street</text>
+  <text x="500" y="177" font-family="Arial, sans-serif" font-size="11" fill="#6B7280">San Francisco, CA 94105</text>
+  <text x="500" y="194" font-family="Arial, sans-serif" font-size="11" fill="#6B7280">john@acme.com</text>
+
+  <!-- Separator -->
+  <line x1="50" y1="215" x2="750" y2="215" stroke="#E5E7EB" stroke-width="1"/>
+
+  <!-- Items Table -->
+  <rect x="50" y="230" width="700" height="130" rx="4" fill="#F9FAFB" stroke="#E5E7EB"/>
+  <!-- Table header -->
+  <rect x="50" y="230" width="700" height="28" rx="4" fill="#F3F4F6"/>
+  <text x="70" y="249" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#6B7280">DESCRIPTION</text>
+  <text x="380" y="249" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#6B7280">QTY</text>
+  <text x="460" y="249" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#6B7280">UNIT PRICE</text>
+  <text x="560" y="249" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#6B7280">TAX</text>
+  <text x="650" y="249" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#6B7280">AMOUNT</text>
+
+  <line x1="50" y1="258" x2="750" y2="258" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="70" y="278" font-family="Arial, sans-serif" font-size="11" fill="#374151">Web Development - Landing Page</text>
+  <text x="395" y="278" font-family="Arial, sans-serif" font-size="11" fill="#374151" text-anchor="middle">1</text>
+  <text x="485" y="278" font-family="Arial, sans-serif" font-size="11" fill="#374151">$800.00</text>
+  <text x="575" y="278" font-family="Arial, sans-serif" font-size="11" fill="#374151">10%</text>
+  <text x="660" y="278" font-family="Arial, sans-serif" font-size="11" fill="#374151">$880.00</text>
+
+  <line x1="50" y1="290" x2="750" y2="290" stroke="#F3F4F6" stroke-width="1"/>
+  <text x="70" y="308" font-family="Arial, sans-serif" font-size="11" fill="#374151">Hosting Setup &amp; Configuration</text>
+  <text x="395" y="308" font-family="Arial, sans-serif" font-size="11" fill="#374151" text-anchor="middle">1</text>
+  <text x="485" y="308" font-family="Arial, sans-serif" font-size="11" fill="#374151">$200.00</text>
+  <text x="575" y="308" font-family="Arial, sans-serif" font-size="11" fill="#374151">10%</text>
+  <text x="660" y="308" font-family="Arial, sans-serif" font-size="11" fill="#374151">$220.00</text>
+
+  <line x1="50" y1="320" x2="750" y2="320" stroke="#F3F4F6" stroke-width="1"/>
+  <text x="70" y="338" font-family="Arial, sans-serif" font-size="11" fill="#374151">SEO Optimization Package</text>
+  <text x="395" y="338" font-family="Arial, sans-serif" font-size="11" fill="#374151" text-anchor="middle">1</text>
+  <text x="485" y="338" font-family="Arial, sans-serif" font-size="11" fill="#374151">$150.00</text>
+  <text x="575" y="338" font-family="Arial, sans-serif" font-size="11" fill="#374151">0%</text>
+  <text x="660" y="338" font-family="Arial, sans-serif" font-size="11" fill="#374151">$150.00</text>
+
+  <!-- Totals -->
+  <line x1="50" y1="360" x2="750" y2="360" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="530" y="382" font-family="Arial, sans-serif" font-size="11" fill="#6B7280">Subtotal:</text>
+  <text x="660" y="382" font-family="Arial, sans-serif" font-size="11" fill="#374151">$1,150.00</text>
+  <text x="530" y="402" font-family="Arial, sans-serif" font-size="11" fill="#6B7280">Tax (10%):</text>
+  <text x="660" y="402" font-family="Arial, sans-serif" font-size="11" fill="#374151">$115.00</text>
+  <text x="530" y="422" font-family="Arial, sans-serif" font-size="11" fill="#6B7280">Discount:</text>
+  <text x="660" y="422" font-family="Arial, sans-serif" font-size="11" fill="#374151">$0.00</text>
+  <line x1="530" y1="432" x2="750" y2="432" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="530" y="450" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#374151">Total Due:</text>
+  <text x="660" y="450" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#4F46E5">$1,265.00</text>
+
+  <!-- Footer -->
+  <line x1="50" y1="460" x2="750" y2="460" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="400" y="476" font-family="Arial, sans-serif" font-size="9" fill="#9CA3AF" text-anchor="middle">Thank you for your business!</text>
+
+  <!-- Placeholder watermark -->
+  <text x="400" y="495" font-family="Arial, sans-serif" font-size="10" fill="#D1D5DB" text-anchor="middle">Screenshot placeholder</text>
+</svg>
