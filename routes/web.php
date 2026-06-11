@@ -24,6 +24,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('invoices', InvoiceController::class);
     Route::get('/invoices/export/csv', [InvoiceController::class, 'exportCsv'])->name('invoices.export.csv');
     Route::get('/invoices/{invoice}/pdf', [InvoiceController::class, 'pdf'])->name('invoices.pdf');
+    Route::post('/invoices/{invoice}/send-email', [InvoiceController::class, 'sendEmail'])->name('invoices.send-email');
     Route::resource('quotes', QuoteController::class);
     Route::get('/quotes/export/csv', [QuoteController::class, 'exportCsv'])->name('quotes.export.csv');
     Route::get('/quotes/{quote}/pdf', [QuoteController::class, 'pdf'])->name('quotes.pdf');

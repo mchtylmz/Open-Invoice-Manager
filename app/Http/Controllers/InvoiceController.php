@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\Product;
+use App\Mail\InvoiceMail;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class InvoiceController extends Controller
 {
@@ -224,6 +226,23 @@ class InvoiceController extends Controller
         $pdf = Pdf::loadView('pdf.invoice', compact('invoice'));
 
         return $pdf->download("invoice-{$invoice->invoice_number}.pdf");
+    }
+
+    public function sendEmail(Invoice $invoice)
+    {
+        if ($invoice->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $invoice->load('customer');
+
+        if (!$invoice->customer?->email) {
+            return back()->with('error', 'Customer has no email address.');
+        }
+
+        Mail::to($invoice->customer->email)->send(new InvoiceMail($invoice));
+
+        return back()->with('success', 'Invoice sent to ' . $invoice->customer->email);
     }
 
     public function exportCsv()
