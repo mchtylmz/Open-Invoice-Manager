@@ -15,6 +15,8 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::view('/profile', 'profile')->name('profile');
+
     Route::resource('customers', CustomerController::class);
     Route::resource('products', ProductController::class);
     Route::resource('invoices', InvoiceController::class);
