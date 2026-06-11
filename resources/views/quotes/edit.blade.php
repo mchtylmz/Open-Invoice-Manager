@@ -17,60 +17,41 @@
                 </div>
             @endif
 
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <form action="{{ route('quotes.update', $quote) }}" method="POST" class="p-6">
                     @csrf
                     @method('PUT')
 
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quote Information</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div>
-                            <label for="customer_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Customer</label>
-                            <select name="customer_id" id="customer_id" required class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                <option value="">Select Customer</option>
-                                @foreach($customers as $customer)
-                                    <option value="{{ $customer->id }}" @selected(old('customer_id', $quote->customer_id) == $customer->id)>{{ $customer->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+                        <x-form-input label="Customer" name="customer_id" type="select" :required="true">
+                            <option value="">Select Customer</option>
+                            @foreach($customers as $customer)
+                                <option value="{{ $customer->id }}" @selected(old('customer_id', $quote->customer_id) == $customer->id)>{{ $customer->name }}</option>
+                            @endforeach
+                        </x-form-input>
 
-                        <div>
-                            <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
-                            <select name="status" id="status" required class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                <option value="draft" @selected(old('status', $quote->status) == 'draft')>Draft</option>
-                                <option value="sent" @selected(old('status', $quote->status) == 'sent')>Sent</option>
-                                <option value="accepted" @selected(old('status', $quote->status) == 'accepted')>Accepted</option>
-                                <option value="rejected" @selected(old('status', $quote->status) == 'rejected')>Rejected</option>
-                            </select>
-                        </div>
+                        <x-form-input label="Status" name="status" type="select" :required="true">
+                            <option value="draft" @selected(old('status', $quote->status) == 'draft')>Draft</option>
+                            <option value="sent" @selected(old('status', $quote->status) == 'sent')>Sent</option>
+                            <option value="accepted" @selected(old('status', $quote->status) == 'accepted')>Accepted</option>
+                            <option value="rejected" @selected(old('status', $quote->status) == 'rejected')>Rejected</option>
+                        </x-form-input>
 
-                        <div>
-                            <label for="issue_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Issue Date</label>
-                            <input type="date" name="issue_date" id="issue_date" value="{{ old('issue_date', $quote->issue_date->format('Y-m-d')) }}" required class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                        </div>
+                        <x-form-input label="Issue Date" name="issue_date" type="date" :value="$quote->issue_date->format('Y-m-d')" :required="true" />
 
-                        <div>
-                            <label for="valid_until" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Valid Until</label>
-                            <input type="date" name="valid_until" id="valid_until" value="{{ old('valid_until', $quote->valid_until ? $quote->valid_until->format('Y-m-d') : '') }}" class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                        </div>
+                        <x-form-input label="Valid Until" name="valid_until" type="date" :value="$quote->valid_until ? $quote->valid_until->format('Y-m-d') : ''" />
 
-                        <div>
-                            <label for="tax_rate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tax Rate (%)</label>
-                            <input type="number" name="tax_rate" id="tax_rate" value="{{ old('tax_rate', $quote->tax_rate) }}" step="0.01" min="0" max="100" class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                        </div>
+                        <x-form-input label="Tax Rate (%)" name="tax_rate" type="number" :value="$quote->tax_rate" step="0.01" min="0" max="100" />
 
-                        <div>
-                            <label for="currency" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Currency</label>
-                            <select name="currency" id="currency" required class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                <option value="TRY" @selected(old('currency', $quote->currency) == 'TRY')>TRY</option>
-                                <option value="USD" @selected(old('currency', $quote->currency) == 'USD')>USD</option>
-                                <option value="EUR" @selected(old('currency', $quote->currency) == 'EUR')>EUR</option>
-                            </select>
-                        </div>
+                        <x-form-input label="Currency" name="currency" type="select" :required="true">
+                            <option value="TRY" @selected(old('currency', $quote->currency) == 'TRY')>TRY</option>
+                            <option value="USD" @selected(old('currency', $quote->currency) == 'USD')>USD</option>
+                            <option value="EUR" @selected(old('currency', $quote->currency) == 'EUR')>EUR</option>
+                        </x-form-input>
 
                         <div class="md:col-span-2">
-                            <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Notes</label>
-                            <textarea name="notes" id="notes" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('notes', $quote->notes) }}</textarea>
+                            <x-form-input label="Notes" name="notes" type="textarea" :value="$quote->notes" placeholder="Additional notes..." />
                         </div>
                     </div>
 
@@ -139,11 +120,11 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-end gap-4">
-                        <a href="{{ route('quotes.index') }}" class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg font-medium text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition">
+                    <div class="flex items-center justify-end gap-3 mt-8 pt-5 border-t border-gray-100 dark:border-gray-700">
+                        <a href="{{ route('quotes.index') }}" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 transition-all">
                             Cancel
                         </a>
-                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-lg font-medium text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition">
+                        <button type="submit" class="inline-flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/35 hover:from-indigo-600 hover:to-purple-700 transition-all">
                             Update Quote
                         </button>
                     </div>
