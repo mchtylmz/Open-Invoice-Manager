@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\Product;
@@ -111,9 +112,16 @@ class DashboardController extends Controller
 
         $calendarStartDayOfWeek = $monthStart->dayOfWeek; // 0=Sun, 6=Sat
 
+        // Recent activities
+        $recentActivities = Activity::where('user_id', $userId)
+            ->latest()
+            ->take(10)
+            ->get();
+
         return view('dashboard', compact(
             'stats', 'recentInvoices', 'recentQuotes',
-            'chartConfig', 'calendarDays', 'calendarStartDayOfWeek'
+            'chartConfig', 'calendarDays', 'calendarStartDayOfWeek',
+            'recentActivities'
         ));
     }
 }

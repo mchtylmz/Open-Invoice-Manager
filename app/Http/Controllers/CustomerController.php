@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Services\ActivityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -50,7 +51,9 @@ class CustomerController extends Controller
 
         $validated['user_id'] = Auth::id();
 
-        Customer::create($validated);
+        $customer = Customer::create($validated);
+
+        ActivityService::log('created', $customer, 'Customer created: ' . $customer->name);
 
         return redirect()->route('customers.index')
             ->with('success', 'Customer created successfully.');
@@ -92,6 +95,8 @@ class CustomerController extends Controller
 
         $customer->update($validated);
 
+        ActivityService::log('updated', $customer, 'Customer updated: ' . $customer->name);
+
         return redirect()->route('customers.index')
             ->with('success', 'Customer updated successfully.');
     }
@@ -102,6 +107,7 @@ class CustomerController extends Controller
             abort(403);
         }
 
+        ActivityService::log('deleted', $customer, 'Customer deleted: ' . $customer->name);
         $customer->delete();
 
         return redirect()->route('customers.index')

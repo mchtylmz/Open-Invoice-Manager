@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\Product;
 use App\Mail\InvoiceMail;
+use App\Services\ActivityService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -114,6 +115,8 @@ class InvoiceController extends Controller
             ]);
         }
 
+        ActivityService::log('created', $invoice, 'Invoice created: ' . $invoice->invoice_number);
+
         return redirect()->route('invoices.index')
             ->with('success', 'Invoice created successfully.');
     }
@@ -198,6 +201,8 @@ class InvoiceController extends Controller
             ]);
         }
 
+        ActivityService::log('updated', $invoice, 'Invoice updated: ' . $invoice->invoice_number);
+
         return redirect()->route('invoices.index')
             ->with('success', 'Invoice updated successfully.');
     }
@@ -208,6 +213,7 @@ class InvoiceController extends Controller
             abort(403);
         }
 
+        ActivityService::log('deleted', $invoice, 'Invoice deleted: ' . $invoice->invoice_number);
         $invoice->items()->delete();
         $invoice->delete();
 
@@ -241,6 +247,8 @@ class InvoiceController extends Controller
         }
 
         Mail::to($invoice->customer->email)->send(new InvoiceMail($invoice));
+
+        ActivityService::log('emailed', $invoice, 'Invoice sent to ' . $invoice->customer->email);
 
         return back()->with('success', 'Invoice sent to ' . $invoice->customer->email);
     }

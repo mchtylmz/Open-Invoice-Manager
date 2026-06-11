@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Quote;
+use App\Services\ActivityService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -112,6 +113,8 @@ class QuoteController extends Controller
             ]);
         }
 
+        ActivityService::log('created', $quote, 'Quote created: ' . $quote->quote_number);
+
         return redirect()->route('quotes.index')
             ->with('success', 'Quote created successfully.');
     }
@@ -196,6 +199,8 @@ class QuoteController extends Controller
             ]);
         }
 
+        ActivityService::log('updated', $quote, 'Quote updated: ' . $quote->quote_number);
+
         return redirect()->route('quotes.index')
             ->with('success', 'Quote updated successfully.');
     }
@@ -206,6 +211,7 @@ class QuoteController extends Controller
             abort(403);
         }
 
+        ActivityService::log('deleted', $quote, 'Quote deleted: ' . $quote->quote_number);
         $quote->items()->delete();
         $quote->delete();
 

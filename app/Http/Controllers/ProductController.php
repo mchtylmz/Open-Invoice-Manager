@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Services\ActivityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,7 +50,9 @@ class ProductController extends Controller
 
         $validated['user_id'] = Auth::id();
 
-        Product::create($validated);
+        $product = Product::create($validated);
+
+        ActivityService::log('created', $product, 'Product created: ' . $product->name);
 
         return redirect()->route('products.index')
             ->with('success', 'Product created successfully.');
@@ -89,6 +92,8 @@ class ProductController extends Controller
 
         $product->update($validated);
 
+        ActivityService::log('updated', $product, 'Product updated: ' . $product->name);
+
         return redirect()->route('products.index')
             ->with('success', 'Product updated successfully.');
     }
@@ -99,6 +104,7 @@ class ProductController extends Controller
             abort(403);
         }
 
+        ActivityService::log('deleted', $product, 'Product deleted: ' . $product->name);
         $product->delete();
 
         return redirect()->route('products.index')
