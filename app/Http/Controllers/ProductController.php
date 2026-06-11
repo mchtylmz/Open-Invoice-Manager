@@ -16,14 +16,20 @@ class ProductController extends Controller
     public function index()
     {
         $search = request('search');
+        $sort = in_array(request('sort'), ['name', 'unit_price', 'unit_type', 'currency', 'created_at']) ? request('sort') : 'created_at';
+        $direction = request('direction') === 'asc' ? 'asc' : 'desc';
+
         $products = Product::where('user_id', Auth::id())
             ->when($search, function ($query, $search) {
-                return $query->where('name', 'like', "%{$search}%");
+                return $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                      ->orWhere('description', 'like', "%{$search}%");
+                });
             })
-            ->latest()
+            ->orderBy($sort, $direction)
             ->paginate(15);
 
-        return view('products.index', compact('products'));
+        return view('products.index', compact('products', 'sort', 'direction'));
     }
 
     public function create()

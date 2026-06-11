@@ -1,6 +1,6 @@
 <p align="center">
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Lisans">
-  <img src="https://img.shields.io/badge/Laravel-11.x-red.svg" alt="Laravel">
+  <img src="https://img.shields.io/badge/Laravel-13.x-red.svg" alt="Laravel">
   <img src="https://img.shields.io/badge/Livewire-3.x-pink.svg" alt="Livewire">
   <img src="https://img.shields.io/badge/TailwindCSS-3.x-06B6D4.svg" alt="TailwindCSS">
   <img src="https://img.shields.io/badge/PHP-8.2+-777BB4.svg" alt="PHP">

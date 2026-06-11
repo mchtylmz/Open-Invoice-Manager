@@ -19,14 +19,28 @@
             @endif
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <form action="{{ route('products.index') }}" method="GET" class="flex gap-4">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search products..." class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-lg font-medium text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition">
+                            Search
+                        </button>
+                        @if(request()->anyFilled(['search', 'sort']))
+                            <a href="{{ route('products.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-transparent rounded-lg font-medium text-xs text-gray-600 dark:text-gray-300 uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-gray-600 transition">
+                                Clear
+                            </a>
+                        @endif
+                    </form>
+                </div>
+
                 <div class="p-6">
                     <table class="w-full text-sm">
                         <thead>
                             <tr class="text-left text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                                <th class="pb-3 font-medium">Name</th>
-                                <th class="pb-3 font-medium">Unit Price</th>
-                                <th class="pb-3 font-medium">Unit Type</th>
-                                <th class="pb-3 font-medium">Currency</th>
+                                <x-sortable-th :route="'products.index'" :field="'name'" :label="'Name'" />
+                                <x-sortable-th :route="'products.index'" :field="'unit_price'" :label="'Unit Price'" />
+                                <x-sortable-th :route="'products.index'" :field="'unit_type'" :label="'Unit Type'" />
+                                <x-sortable-th :route="'products.index'" :field="'currency'" :label="'Currency'" />
                                 <th class="pb-3 font-medium text-right">Actions</th>
                             </tr>
                         </thead>

@@ -20,10 +20,20 @@ class InvoiceController extends Controller
     {
         $search = request('search');
         $status = request('status');
+        $dateFrom = request('date_from');
+        $dateTo = request('date_to');
+        $sort = in_array(request('sort'), ['invoice_number', 'status', 'issue_date', 'due_date', 'total', 'created_at']) ? request('sort') : 'created_at';
+        $direction = request('direction') === 'asc' ? 'asc' : 'desc';
 
         $invoices = Invoice::where('user_id', Auth::id())
             ->when($status, function ($query, $status) {
                 return $query->where('status', $status);
+            })
+            ->when($dateFrom, function ($query, $dateFrom) {
+                return $query->whereDate('issue_date', '>=', $dateFrom);
+            })
+            ->when($dateTo, function ($query, $dateTo) {
+                return $query->whereDate('issue_date', '<=', $dateTo);
             })
             ->when($search, function ($query, $search) {
                 return $query->where(function ($q) use ($search) {
@@ -34,10 +44,10 @@ class InvoiceController extends Controller
                 });
             })
             ->with('customer')
-            ->latest()
+            ->orderBy($sort, $direction)
             ->paginate(15);
 
-        return view('invoices.index', compact('invoices'));
+        return view('invoices.index', compact('invoices', 'sort', 'direction'));
     }
 
     public function create()

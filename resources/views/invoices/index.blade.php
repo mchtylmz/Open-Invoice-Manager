@@ -20,7 +20,7 @@
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <form action="{{ route('invoices.index') }}" method="GET" class="flex gap-4">
+                    <form action="{{ route('invoices.index') }}" method="GET" class="flex flex-wrap gap-4">
                         <select name="status" class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             <option value="">All Statuses</option>
                             <option value="draft" @selected(request('status') == 'draft')>Draft</option>
@@ -29,10 +29,17 @@
                             <option value="overdue" @selected(request('status') == 'overdue')>Overdue</option>
                             <option value="cancelled" @selected(request('status') == 'cancelled')>Cancelled</option>
                         </select>
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by invoice number or customer..." class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <input type="date" name="date_from" value="{{ request('date_from') }}" class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <input type="date" name="date_to" value="{{ request('date_to') }}" class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by invoice number or customer..." class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 min-w-[200px]">
                         <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-lg font-medium text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition">
                             Filter
                         </button>
+                        @if(request()->anyFilled(['search', 'status', 'date_from', 'date_to', 'sort']))
+                            <a href="{{ route('invoices.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-transparent rounded-lg font-medium text-xs text-gray-600 dark:text-gray-300 uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-gray-600 transition">
+                                Clear
+                            </a>
+                        @endif
                     </form>
                 </div>
 
@@ -40,12 +47,12 @@
                     <table class="w-full text-sm">
                         <thead>
                             <tr class="text-left text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                                <th class="pb-3 font-medium">Invoice Number</th>
+                                <x-sortable-th :route="'invoices.index'" :field="'invoice_number'" :label="'Invoice #'" />
                                 <th class="pb-3 font-medium">Customer</th>
-                                <th class="pb-3 font-medium">Status</th>
-                                <th class="pb-3 font-medium">Issue Date</th>
-                                <th class="pb-3 font-medium">Due Date</th>
-                                <th class="pb-3 font-medium text-right">Total</th>
+                                <x-sortable-th :route="'invoices.index'" :field="'status'" :label="'Status'" />
+                                <x-sortable-th :route="'invoices.index'" :field="'issue_date'" :label="'Issue Date'" />
+                                <x-sortable-th :route="'invoices.index'" :field="'due_date'" :label="'Due Date'" />
+                                <x-sortable-th :route="'invoices.index'" :field="'total'" :label="'Total'" />
                                 <th class="pb-3 font-medium text-right">Actions</th>
                             </tr>
                         </thead>

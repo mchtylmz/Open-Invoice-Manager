@@ -16,6 +16,9 @@ class CustomerController extends Controller
     public function index()
     {
         $search = request('search');
+        $sort = in_array(request('sort'), ['name', 'email', 'phone', 'tax_number', 'created_at']) ? request('sort') : 'created_at';
+        $direction = request('direction') === 'asc' ? 'asc' : 'desc';
+
         $customers = Customer::where('user_id', Auth::id())
             ->when($search, function ($query, $search) {
                 return $query->where(function ($q) use ($search) {
@@ -24,10 +27,10 @@ class CustomerController extends Controller
                       ->orWhere('phone', 'like', "%{$search}%");
                 });
             })
-            ->latest()
+            ->orderBy($sort, $direction)
             ->paginate(15);
 
-        return view('customers.index', compact('customers'));
+        return view('customers.index', compact('customers', 'sort', 'direction'));
     }
 
     public function create()
