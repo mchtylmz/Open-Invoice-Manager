@@ -104,4 +104,26 @@ class ProductController extends Controller
         return redirect()->route('products.index')
             ->with('success', 'Product deleted successfully.');
     }
+
+    public function exportCsv()
+    {
+        $products = Product::where('user_id', Auth::id())->get();
+
+        $headers = ['Name', 'Description', 'Unit Price', 'Unit Type', 'Currency', 'Created At'];
+        $rows = $products->map(fn($p) => [
+            $p->name, $p->description, number_format($p->unit_price, 2),
+            $p->unit_type, $p->currency, $p->created_at->format('d.m.Y'),
+        ]);
+
+        $callback = function () use ($headers, $rows) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $headers);
+            foreach ($rows as $row) {
+                fputcsv($file, $row);
+            }
+            fclose($file);
+        };
+
+        return response()->streamDownload($callback, 'products.csv');
+    }
 }

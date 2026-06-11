@@ -18,10 +18,14 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/profile', 'profile')->name('profile');
 
     Route::resource('customers', CustomerController::class);
+    Route::get('/customers/export/csv', [CustomerController::class, 'exportCsv'])->name('customers.export.csv');
     Route::resource('products', ProductController::class);
+    Route::get('/products/export/csv', [ProductController::class, 'exportCsv'])->name('products.export.csv');
     Route::resource('invoices', InvoiceController::class);
+    Route::get('/invoices/export/csv', [InvoiceController::class, 'exportCsv'])->name('invoices.export.csv');
     Route::get('/invoices/{invoice}/pdf', [InvoiceController::class, 'pdf'])->name('invoices.pdf');
     Route::resource('quotes', QuoteController::class);
+    Route::get('/quotes/export/csv', [QuoteController::class, 'exportCsv'])->name('quotes.export.csv');
     Route::get('/quotes/{quote}/pdf', [QuoteController::class, 'pdf'])->name('quotes.pdf');
 
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');

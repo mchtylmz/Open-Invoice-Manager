@@ -226,6 +226,29 @@ class InvoiceController extends Controller
         return $pdf->download("invoice-{$invoice->invoice_number}.pdf");
     }
 
+    public function exportCsv()
+    {
+        $invoices = Invoice::where('user_id', Auth::id())->with('customer')->get();
+
+        $headers = ['Invoice Number', 'Customer', 'Status', 'Issue Date', 'Due Date', 'Total', 'Currency', 'Created At'];
+        $rows = $invoices->map(fn($i) => [
+            $i->invoice_number, $i->customer->name ?? '-', $i->status,
+            $i->issue_date->format('d.m.Y'), $i->due_date->format('d.m.Y'),
+            number_format($i->total, 2), $i->currency, $i->created_at->format('d.m.Y'),
+        ]);
+
+        $callback = function () use ($headers, $rows) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $headers);
+            foreach ($rows as $row) {
+                fputcsv($file, $row);
+            }
+            fclose($file);
+        };
+
+        return response()->streamDownload($callback, 'invoices.csv');
+    }
+
     private function generateInvoiceNumber()
     {
         $prefix = 'INV-' . now()->format('Ym') . '-';

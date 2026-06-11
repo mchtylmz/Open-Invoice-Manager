@@ -226,6 +226,29 @@ class QuoteController extends Controller
         return $pdf->download("quote-{$quote->quote_number}.pdf");
     }
 
+    public function exportCsv()
+    {
+        $quotes = Quote::where('user_id', Auth::id())->with('customer')->get();
+
+        $headers = ['Quote Number', 'Customer', 'Status', 'Issue Date', 'Valid Until', 'Total', 'Currency', 'Created At'];
+        $rows = $quotes->map(fn($q) => [
+            $q->quote_number, $q->customer->name ?? '-', $q->status,
+            $q->issue_date->format('d.m.Y'), $q->valid_until->format('d.m.Y'),
+            number_format($q->total, 2), $q->currency, $q->created_at->format('d.m.Y'),
+        ]);
+
+        $callback = function () use ($headers, $rows) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $headers);
+            foreach ($rows as $row) {
+                fputcsv($file, $row);
+            }
+            fclose($file);
+        };
+
+        return response()->streamDownload($callback, 'quotes.csv');
+    }
+
     private function generateQuoteNumber()
     {
         $prefix = 'QTE-' . now()->format('Ym') . '-';

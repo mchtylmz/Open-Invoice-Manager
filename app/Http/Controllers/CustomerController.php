@@ -107,4 +107,27 @@ class CustomerController extends Controller
         return redirect()->route('customers.index')
             ->with('success', 'Customer deleted successfully.');
     }
+
+    public function exportCsv()
+    {
+        $customers = Customer::where('user_id', Auth::id())->get();
+
+        $headers = ['Name', 'Email', 'Phone', 'Tax Number', 'Address', 'Created At'];
+        $rows = $customers->map(fn($c) => [
+            $c->name, $c->email, $c->phone, $c->tax_number,
+            str_replace("\n", ' | ', $c->address ?? ''),
+            $c->created_at->format('d.m.Y'),
+        ]);
+
+        $callback = function () use ($headers, $rows) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $headers);
+            foreach ($rows as $row) {
+                fputcsv($file, $row);
+            }
+            fclose($file);
+        };
+
+        return response()->streamDownload($callback, 'customers.csv');
+    }
 }
