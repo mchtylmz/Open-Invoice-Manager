@@ -23,6 +23,10 @@ class DashboardController extends Controller
             'total_products' => Product::where('user_id', $userId)->count(),
             'total_invoices' => Invoice::where('user_id', $userId)->count(),
             'pending_invoices' => Invoice::where('user_id', $userId)->where('status', 'pending')->count(),
+            'overdue_invoices' => Invoice::where('user_id', $userId)
+                ->where('status', 'pending')
+                ->where('due_date', '<', now()->startOfDay())
+                ->count(),
             'total_quotes' => Quote::where('user_id', $userId)->count(),
             'revenue' => Invoice::where('user_id', $userId)->where('status', 'paid')->sum('total'),
         ];

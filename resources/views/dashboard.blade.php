@@ -31,6 +31,12 @@
         <div class="py-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
+                @if (session('reminder_sent'))
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-2xl px-6 py-4 text-sm text-emerald-700">
+                        {{ session('reminder_sent') }}
+                    </div>
+                @endif
+
                 <!-- Stats Row -->
                 <div x-show="widgets.stats.visible" x-transition class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
@@ -100,6 +106,25 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Overdue Reminder Banner -->
+                @if(($stats['overdue_invoices'] ?? 0) > 0)
+                    <div x-show="widgets.stats.visible" x-transition class="bg-red-50 border border-red-200 rounded-2xl px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                            <div>
+                                <p class="text-sm font-semibold text-red-800">{{ $stats['overdue_invoices'] }} overdue invoice{{ $stats['overdue_invoices'] > 1 ? 's' : '' }} pending</p>
+                                <p class="text-xs text-red-600">Send email reminders to stay on top of payments.</p>
+                            </div>
+                        </div>
+                        <form method="POST" action="{{ route('reminders.overdue.send') }}" class="flex-shrink-0">
+                            @csrf
+                            <button type="submit" class="px-5 py-2 text-sm font-bold text-white bg-red-600 rounded-xl hover:bg-red-700 transition-colors">
+                                Send Reminders
+                            </button>
+                        </form>
+                    </div>
+                @endif
 
                 <!-- Chart + Calendar Row -->
                 <div class="grid lg:grid-cols-5 gap-6">

@@ -36,6 +36,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/exchange-rates', [ExchangeRateController::class, 'index'])->name('exchange-rates.index');
     Route::post('/exchange-rates/convert', [ExchangeRateController::class, 'convert'])->name('exchange-rates.convert');
 
+    Route::post('/reminders/overdue/send', function () {
+        \Illuminate\Support\Facades\Artisan::call('reminders:overdue', ['--user' => auth()->id()]);
+        $output = \Illuminate\Support\Facades\Artisan::output();
+        return back()->with('reminder_sent', trim($output) ?: 'Reminders sent.');
+    })->name('reminders.overdue.send');
+
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
