@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExchangeRateController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +33,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/quotes/export/csv', [QuoteController::class, 'exportCsv'])->name('quotes.export.csv');
     Route::get('/quotes/{quote}/pdf', [QuoteController::class, 'pdf'])->name('quotes.pdf');
 
+    Route::get('/exchange-rates', [ExchangeRateController::class, 'index'])->name('exchange-rates.index');
+    Route::post('/exchange-rates/convert', [ExchangeRateController::class, 'convert'])->name('exchange-rates.convert');
+
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 });
