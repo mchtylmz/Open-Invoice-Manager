@@ -232,6 +232,45 @@ class QuoteController extends Controller
         return $pdf->download("quote-{$quote->quote_number}.pdf");
     }
 
+    public function duplicate(Quote $quote)
+    {
+        if ($quote->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $quote->load('items');
+
+        $newQuote = Quote::create([
+            'user_id' => Auth::id(),
+            'customer_id' => $quote->customer_id,
+            'quote_number' => $this->generateQuoteNumber(),
+            'issue_date' => now(),
+            'valid_until' => now()->addDays(30),
+            'status' => 'draft',
+            'subtotal' => $quote->subtotal,
+            'tax_rate' => $quote->tax_rate,
+            'tax_amount' => $quote->tax_amount,
+            'total' => $quote->total,
+            'currency' => $quote->currency,
+            'notes' => $quote->notes,
+        ]);
+
+        foreach ($quote->items as $item) {
+            $newQuote->items()->create([
+                'product_id' => $item->product_id,
+                'description' => $item->description,
+                'quantity' => $item->quantity,
+                'unit_price' => $item->unit_price,
+                'total' => $item->total,
+            ]);
+        }
+
+        ActivityService::log('created', $newQuote, 'Quote duplicated from ' . $quote->quote_number);
+
+        return redirect()->route('quotes.edit', $newQuote)
+            ->with('success', 'Quote duplicated. Edit the copy.');
+    }
+
     public function exportCsv()
     {
         $quotes = Quote::where('user_id', Auth::id())->with('customer')->get();

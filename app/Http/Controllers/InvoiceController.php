@@ -234,6 +234,45 @@ class InvoiceController extends Controller
         return $pdf->download("invoice-{$invoice->invoice_number}.pdf");
     }
 
+    public function duplicate(Invoice $invoice)
+    {
+        if ($invoice->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $invoice->load('items');
+
+        $newInvoice = Invoice::create([
+            'user_id' => Auth::id(),
+            'customer_id' => $invoice->customer_id,
+            'invoice_number' => $this->generateInvoiceNumber(),
+            'issue_date' => now(),
+            'due_date' => now()->addDays(30),
+            'status' => 'draft',
+            'subtotal' => $invoice->subtotal,
+            'tax_rate' => $invoice->tax_rate,
+            'tax_amount' => $invoice->tax_amount,
+            'total' => $invoice->total,
+            'currency' => $invoice->currency,
+            'notes' => $invoice->notes,
+        ]);
+
+        foreach ($invoice->items as $item) {
+            $newInvoice->items()->create([
+                'product_id' => $item->product_id,
+                'description' => $item->description,
+                'quantity' => $item->quantity,
+                'unit_price' => $item->unit_price,
+                'total' => $item->total,
+            ]);
+        }
+
+        ActivityService::log('created', $newInvoice, 'Invoice duplicated from ' . $invoice->invoice_number);
+
+        return redirect()->route('invoices.edit', $newInvoice)
+            ->with('success', 'Invoice duplicated. Edit the copy.');
+    }
+
     public function sendEmail(Invoice $invoice)
     {
         if ($invoice->user_id !== Auth::id()) {
